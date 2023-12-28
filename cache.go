@@ -8,7 +8,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strconv"
 	"sync"
 )
 
@@ -204,6 +203,7 @@ func (c *cache) AddMetadata(gzip *[]byte, wg *sync.WaitGroup) {
 		if err != nil {
 
 			var sdError SDError
+			var saveError = err
 			err = json.Unmarshal(jsonByte, &sdError)
 			if err == nil {
 
@@ -212,6 +212,10 @@ func (c *cache) AddMetadata(gzip *[]byte, wg *sync.WaitGroup) {
 					ShowErr(err)
 				}
 
+			} else {
+				if Config.Options.SDDownloadErrors {
+					ShowErr(fmt.Errorf("Unable to unmarshal the JSON.  Maybe a type compatability error.  %s", saveError.Error()))
+				}
 			}
 
 		} else {
@@ -580,7 +584,7 @@ func GetImageUrl(urlid string, token string, name string) {
 		defer file.Close()
 		req, err := http.Get(url)
 		if err != nil {
-		    return
+			return
 		}
 		defer req.Body.Close()
 		io.Copy(file, req.Body)
@@ -598,8 +602,6 @@ func (c *cache) GetIcon(id string) (i []Icon) {
 
 	var aspects = []string{"2x3", "4x3", "3x4", "16x9"}
 	var uri string
-	var width, height int
-	var err error
 	var nameFinal string
 	switch Config.Options.PosterAspect {
 
@@ -633,19 +635,9 @@ func (c *cache) GetIcon(id string) (i []Icon) {
 
 				if icon.Aspect == aspect {
 
-					width, err = strconv.Atoi(icon.Width)
-					if err != nil {
-						return
-					}
-
-					height, err = strconv.Atoi(icon.Height)
-					if err != nil {
-						return
-					}
-
-					if width > maxWidth {
-						maxWidth = width
-						maxHeight = height
+					if icon.Width > maxWidth {
+						maxWidth = icon.Width
+						maxHeight = icon.Height
 						uri = icon.URI
 						nameFinal = nameTemp
 					}
