@@ -208,6 +208,7 @@ func (c *cache) AddMetadata(gzip *[]byte, wg *sync.WaitGroup) {
 			// showInfo("SD", someAsString)
 
 			var sdError SDError
+			var saveError = err
 			err = json.Unmarshal(jsonByte, &sdError)
 			if err == nil {
 
@@ -216,6 +217,10 @@ func (c *cache) AddMetadata(gzip *[]byte, wg *sync.WaitGroup) {
 					ShowErr(err)
 				}
 
+			} else {
+				if Config.Options.SDDownloadErrors {
+					ShowErr(fmt.Errorf("Unable to unmarshal the JSON.  Maybe a type compatability error.  %s", saveError.Error()))
+				}
 			}
 
 		} else {
