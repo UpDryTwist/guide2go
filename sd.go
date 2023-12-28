@@ -66,7 +66,7 @@ func (sd *SD) Init() (err error) {
 
 		showInfo("SD", fmt.Sprintf("Account Expires: %v", sd.Resp.Status.Account.Expires))
 		showInfo("SD", fmt.Sprintf("Lineups: %d / %d", len(sd.Resp.Status.Lineups), sd.Resp.Status.Account.MaxLineups))
-		// Dump the information about each lineup.  I went nuts trying to find this info, and eventually needed to use the debugger!
+		// Dump the information about each lineup.  Convenient if you're attempting to hand-add things.
 		for lineupItemNbr, lineupInfo := range sd.Resp.Status.Lineups {
 			showInfo("SD", fmt.Sprintf("  %d: %s = %s (modified %s) @ %s",
 				lineupItemNbr+1,

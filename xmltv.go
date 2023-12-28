@@ -77,6 +77,14 @@ func CreateXMLTV(filename string) (err error) {
 		xmlCha.DisplayName = append(xmlCha.DisplayName, DisplayName{Value: cache.Name})
 		// Add the affiliate for convenience - makes it easier to match later
 		xmlCha.DisplayName = append(xmlCha.DisplayName, DisplayName{Value: fmt.Sprintf("%s (%s)", cache.Name, cache.Affiliate)})
+		// And add a really fully qualified name - helps for OTA disentangling
+		xmlCha.DisplayName = append(xmlCha.DisplayName,
+			DisplayName{Value: fmt.Sprintf("%s (%s) (%s %s %s)",
+				cache.Name,
+				cache.Affiliate,
+				cache.Broadcaster.City,
+				cache.Broadcaster.State,
+				cache.Broadcaster.Country)})
 
 		he(enc.Encode(xmlCha))
 
