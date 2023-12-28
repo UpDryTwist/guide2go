@@ -232,7 +232,7 @@ type SDProgram struct {
 	} `json:"titles"`
 }
 
-//SDMetadata : Schedules Direct meta data
+// SDMetadata : Schedules Direct meta data
 type SDMetadata struct {
 	Data      []Data `json:"data",required`
 	ProgramID string `json:"programID"`
@@ -240,10 +240,10 @@ type SDMetadata struct {
 
 type Data struct {
 	Aspect   string `json:"aspect"`
-	Height   string `json:"height"`
+	Height   int    `json:"height"`
 	Size     string `json:"size"`
 	URI      string `json:"uri"`
-	Width    string `json:"width"`
+	Width    int    `json:"width"`
 	Category string `json:"category"`
 	Tier     string `json:"tier"`
 }
