@@ -655,7 +655,13 @@ func (c *cache) GetIcon(id string) (i []Icon) {
 				if Config.Options.TVShowImages && !ImageError {
 					GetImageUrl(uri, Token, nameFinal)
 				}
-				path := "http://" + Config.Options.Hostname + "/images/" + nameFinal
+				var prefix string
+				if Config.Options.UseHTTPS {
+					prefix = "https://"
+				} else {
+					prefix = "http://"
+				}
+				path := prefix + Config.Options.Hostname + "/images/" + nameFinal
 				i = append(i, Icon{Src: path, Height: maxHeight, Width: maxWidth})
 			}
 

@@ -207,6 +207,22 @@ func (c *config) Open() (err error) {
 		showInfo("G2G", fmt.Sprintf("%s (SD errors) [%s]", getMsg(0300), Config.File))
 
 	}
+	// HTTPS options
+	if !bytes.Contains(data, []byte("Use HTTPS")) {
+
+		newOptions = true
+		Config.Options.UseHTTPS = false
+
+		showInfo("G2G", fmt.Sprintf("%s (Use HTTPS) [%s]", getMsg(0300), Config.File))
+	}
+	// Long description first option
+	if !bytes.Contains(data, []byte("Long Channel Description First")) {
+
+		newOptions = true
+		Config.Options.LongChannelDescriptionFirst = false
+
+		showInfo("G2G", fmt.Sprintf("%s (Long Channel Description First) [%s]", getMsg(0300), Config.File))
+	}
 
 	if newOptions {
 
@@ -253,6 +269,8 @@ func (c *config) InitConfig() {
 	c.Options.Credits = false
 	c.Options.ImagesPath = "/data/images/"
 	c.Options.ProxyImages = false
+	c.Options.UseHTTPS = false
+	c.Options.LongChannelDescriptionFirst = false
 	Config.Options.Rating.Guidelines = true
 	Config.Options.Rating.Countries = []string{"USA", "CHE", "DE"}
 	Config.Options.Rating.CountryCodeAsSystem = false
