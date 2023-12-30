@@ -87,7 +87,6 @@ func CreateXMLTV(filename string) (err error) {
 		xmlCha.DisplayName = append(xmlCha.DisplayName, DisplayName{Value: cache.Name})
 		// Add the affiliate for convenience - makes it easier to match later
 		xmlCha.DisplayName = append(xmlCha.DisplayName, DisplayName{Value: fmt.Sprintf("%s (%s)", cache.Name, cache.Affiliate)})
-		// And add a really fully qualified name - helps for OTA disentangling
 
 		he(enc.Encode(xmlCha))
 
@@ -125,6 +124,7 @@ func (channel *G2GCache) getLogo() (icon Icon) {
 
 func getProgram(channel G2GCache) (p []Programme) {
 
+	showInfo("G2G", fmt.Sprintf("Generating programs for channel %s (%s): %s", channel.Callsign, channel.StationID, channel.Affiliate))
 	if schedule, ok := Cache.Schedule[channel.StationID]; ok {
 
 		for _, s := range schedule {
