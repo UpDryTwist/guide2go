@@ -32,6 +32,10 @@ func CreateXMLTV(filename string) (err error) {
 	info.Name = xml.Name{Local: "source-info-url"}
 	info.Value = "http://schedulesdirect.org"
 
+	var date xml.Attr
+	date.Name = xml.Name{Local: "date"}
+	date.Value = time.DateTime
+
 	buf := &bytes.Buffer{}
 	buf.WriteString(xml.Header)
 
@@ -64,7 +68,7 @@ func CreateXMLTV(filename string) (err error) {
 
 	showInfo("G2G", fmt.Sprintf("Create XMLTV File [%s]", Config.Files.XMLTV))
 
-	he(enc.EncodeToken(xml.StartElement{Name: xml.Name{Local: "tv"}, Attr: []xml.Attr{generator, source, info}}))
+	he(enc.EncodeToken(xml.StartElement{Name: xml.Name{Local: "tv"}, Attr: []xml.Attr{date, generator, source, info}}))
 
 	// XMLTV Channels
 	for _, cache := range Cache.Channel {
